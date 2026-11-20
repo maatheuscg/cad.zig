@@ -29,7 +29,7 @@ pub const TriangleMesh = struct {
 };
 
 pub const Tessellator = struct {
-    pub fn tessellatorBody(body: *const Topology.BRepBody, allocator: std.mem.Allocator) !TriangleMesh {
+    pub fn tessellateBody(body: *const Topology.BRepBody, allocator: std.mem.Allocator) !TriangleMesh {
         var mesh = TriangleMesh.init(allocator);
         errdefer mesh.deinit();
 

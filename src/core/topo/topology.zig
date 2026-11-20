@@ -36,29 +36,29 @@ pub const Face = struct {
 };
 
 pub const BRepBody = struct {
-    allocator: std.mem.Allocator,
-    vertices: std.ArrayList(Vertex),
-    half_edge: std.ArrayList(HalfEdge),
-    faces: std.ArrayList(Face),
+    allocator:  std.mem.Allocator,
+    vertices:   std.ArrayList(Vertex),
+    half_edge:  std.ArrayList(HalfEdge),
+    faces:      std.ArrayList(Face),
 
     pub fn init(allocator: std.mem.Allocator) BRepBody {
         return .{
-            .allocator = allocator,
-            .vertices = std.ArrayList(Vertex).init(allocator),
-            .half_edge = std.ArrayList(HalfEdge).init(allocator),
-            .faces = std.ArrayList(Face).init(allocator),
+            .allocator  = allocator,
+            .vertices   = .empty,
+            .half_edge  = .empty,
+            .faces      = .empty,
         };
     }
 
     pub fn deinit(self: *BRepBody) void {
-        self.vertices.deinit();
-        self.half_edge.deinit();
-        self.faces.deinit();
+        self.vertices.deinit(self.allocator);
+        self.half_edge.deinit(self.allocator);
+        self.faces.deinit(self.allocator);
     }
 
     pub fn addVertex(self: *BRepBody, point: Point, outgoing_edge: HalfEdgeHandle) !VertexHandle {
         const id = @as(VertexHandle, @intCast(self.vertices.items.len));
-        try self.vertices.append(.{
+        try self.vertices.append(self.allocator, .{
             .point = point,
             .outgoing_edge = outgoing_edge,
         });
@@ -67,7 +67,7 @@ pub const BRepBody = struct {
 
     pub fn addFace(self: *BRepBody, outer_edge: HalfEdgeHandle) !FaceHandle {
         const id = @as(FaceHandle, @intCast(self.faces.items.len));
-        try self.faces.append(.{
+        try self.faces.append(self.allocator, .{
             .outer_edge = outer_edge,
         });
         return id;

@@ -56,7 +56,7 @@ pub const BRepBuilder = struct {
         _ = v1; _ = v2; _ = v3; _ = v4;
         _ = v5; _ = v6; _ = v7;
 
-        try body.half_edge.append(.{
+        try body.half_edge.append(allocator, .{
             .origin = v0,
             .twin = 12,
             .next = 1,

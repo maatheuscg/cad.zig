@@ -3,3 +3,6 @@ zig-out/
 zig-pkg/
 *.o
 .vscode
+
+// arquivo gerado via dee 'gl_glfw.h' via 'zig translate-c'
+src/render/c_glfw.zig
